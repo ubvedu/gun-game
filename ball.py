@@ -45,6 +45,12 @@ class Ball:
         """
         pygame.draw.circle(self.screen, self.color, (round(self.x), round(self.y)), self.r)
 
+    def nearest_from(self, x, y):
+        dx = self.x - x
+        dy = self.y - y
+        a = (1 - math.sqrt(dx ** 2 + dy ** 2) / self.r)
+        return dx * a, dy * a
+
     def collide(self, obj):
         """
         Проверяет, сталкивалкивается ли данный обьект с целью, описываемой в обьекте obj.
