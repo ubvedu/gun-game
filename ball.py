@@ -1,7 +1,6 @@
 import math
 import pygame
 from colors import DARKER_GREY
-from random import choice
 
 
 class Ball:
