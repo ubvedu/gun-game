@@ -17,7 +17,7 @@ balls = []
 clock = pygame.time.Clock()
 
 gun = Gun(screen)
-target = Target(screen)
+targets = [Target(screen) for _ in range(5)]
 finished = False
 
 while not finished:
@@ -25,7 +25,8 @@ while not finished:
     for b in balls:
         b.draw()
     gun.draw()
-    target.draw()
+    for t in targets:
+        t.draw()
 
     clock.tick(FPS)
     for event in pygame.event.get():
@@ -38,13 +39,17 @@ while not finished:
             bullets += 1
             balls.append(ball)
         elif event.type == pygame.MOUSEMOTION:
-            gun.targetting(event)
+            gun.target(event)
 
     for b in balls:
         b.move()
-        if b.collide(target):
-            target.hit()
-            target = Target(screen)
+        for t in targets:
+            if b.collide(t):
+                target.hit()
+                target = Target(screen)
+    for t in targets:
+        t.move()
+    balls = list(filter(lambda b: not b.is_out(), balls))
     gun.power_up()
     pygame.display.update()
 

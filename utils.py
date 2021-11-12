@@ -9,11 +9,13 @@ def draw_rotated(dst, x, y, src, ox, oy, angle):
     """
     lever = math.sqrt(ox ** 2 + oy ** 2)
     clip = src.get_clip()
-    if angle > 0:
+    angle = angle % math.pi
+    if angle < math.pi / 2:
         beta = angle + math.atan2(oy, ox)
         dx = -lever * math.cos(beta) - clip.h * math.sin(angle)
         dy = -lever * math.sin(beta)
     else:
+        angle -= math.pi
         beta = -angle + math.atan2(ox, oy)
         dx = -lever * math.sin(beta)
         dy = -lever * math.cos(beta) + clip.w * math.sin(angle)

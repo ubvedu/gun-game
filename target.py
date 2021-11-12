@@ -1,6 +1,6 @@
 import pygame
-from random import randint as rnd
-from colors import RED
+from random import randint as rnd, random
+from colors import LIGHT_BLUE, BLACK
 from utils import draw_rotated
 import math
 
@@ -13,14 +13,21 @@ class Target:
 
     def __init__(self, screen):
         """ Инициализация новой цели. """
-        self.x = rnd(600, 780)
-        self.y = rnd(300, 550)
+        r = screen.get_clip()
         self.r = rnd(2, 50)
-        self.angle = math.pi / 3
-        self.w = 100
-        self.h = 10
-        self.color = RED
+        self.angle = (1 + random()) * math.pi / 2
+        self.omega = random() * math.pi / 32
+        self.w = 120
+        self.h = 16
+        self.color = LIGHT_BLUE
+        self.color_ax = BLACK
         self.screen = screen
+
+        self.x = rnd(r.w / 2, r.w)
+        self.y = rnd(self.w / 2, r.h - self.w / 2)
+
+    def move(self):
+        self.angle += self.omega
 
     def hit(self, points=1):
         """Попадание шарика в цель."""
@@ -30,7 +37,7 @@ class Target:
         sf.set_colorkey((0, 0, 0))
         pygame.draw.rect(sf, self.color, (0, 0, self.w, self.h))
         draw_rotated(self.screen, self.x, self.y, sf, self.w / 2, self.h / 2, self.angle)
-        pygame.draw.circle(self.screen, (0, 0, 255), (self.x, self.y), 5)
+        pygame.draw.circle(self.screen, self.color_ax, (self.x, self.y), 2)
 
     def nearest_from(self, x, y):
         """

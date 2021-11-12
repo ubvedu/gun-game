@@ -1,6 +1,5 @@
 import math
 import pygame
-from pygame import draw
 from colors import GREY, RED, DARK_GREY
 from ball import Ball
 from utils import draw_rotated
@@ -17,6 +16,20 @@ class Gun:
         self.x = 40
         self.y = self.screen.get_clip().h / 2
 
+        self.ball_r = 16
+        self.h2 = self.ball_r * 2 + 2
+        self.h1 = int(self.h2 * 4 / 3)
+        self.w = self.h1 * 2
+
+        self.power_default = 0.1
+        self.power_increase = 0.02
+        self.power_max = 1
+        self.release()
+
+    def release(self):
+        self.preparing = False
+        self.power = self.power_default
+
     def prepare(self):
         """
         Подготовка к выстрелу.
@@ -24,7 +37,6 @@ class Gun:
         Происходит при нажатии мыши. Во время подготовки контролируется сила выстрела.
         """
         self.preparing = True
-        self.power = 10
 
     def fire(self):
         """
@@ -35,20 +47,20 @@ class Gun:
 
         :return: выстреленный мяч
         """
-
-        self.preparing = False
-
         lever = self.w - self.h1
-        return Ball(
+        v = 50
+        ball = Ball(
             self.screen,
             self.x + lever * math.cos(self.angle),
             self.y + lever * math.sin(self.angle),
-            15,
-            self.power * math.cos(self.angle),
-            self.power * math.sin(self.angle)
+            20,
+            v * self.power * math.cos(self.angle),
+            v * self.power * math.sin(self.angle)
         )
+        self.release()
+        return ball
 
-    def targetting(self, event):
+    def target(self, event):
         """Прицеливание. Зависит от положения мыши."""
         if event:
             self.update_angle(event.pos)
@@ -67,20 +79,28 @@ class Gun:
     def draw(self):
         """Рисует мяч на экране."""
 
-        self.w = 100
-        self.h1 = 48
-        self.h2 = 32
-
         sf = pygame.Surface((self.w, self.h1))
         sf.set_colorkey((0, 0, 0))
-        color = RED if self.preparing else GREY
-        pygame.draw.polygon(sf, color, [
+        pygame.draw.polygon(sf, GREY, [
             (self.h1 / 2, 0),
             (self.h1 / 2, self.h1),
             (self.w, (self.h1 + self.h2) / 2),
             (self.w, (self.h1 - self.h2) / 2),
         ])
-        draw_rotated(self.screen, self.x, self.y, sf, self.h1 / 2, self.h1 / 2, self.angle)    
+        draw_rotated(self.screen, self.x, self.y, sf, self.h1 / 2, self.h1 / 2, self.angle)
+
+        sf = pygame.Surface((self.w, self.h1))
+        sf.set_colorkey((0, 0, 0))
+        p = self.power - self.power_default
+        x = p * (self.h1 / 2 - self.w) + self.w
+        d = (1 - p) * (self.h1 - self.h2) / 2
+        pygame.draw.polygon(sf, RED, [
+            (x, d),
+            (x, self.h1 - d),
+            (self.w, (self.h1 + self.h2) / 2),
+            (self.w, (self.h1 - self.h2) / 2),
+        ])
+        draw_rotated(self.screen, self.x, self.y, sf, self.h1 / 2, self.h1 / 2, self.angle)
 
         r = 48
         sf = pygame.Surface((r, 2*r))
@@ -89,5 +109,5 @@ class Gun:
         self.screen.blit(sf, (self.x - r / 2, self.y - r))
 
     def power_up(self):
-        if self.preparing and self.power < 100:
-            self.power += 1
+        if self.preparing and self.power < self.power_max:
+            self.power += self.power_increase
