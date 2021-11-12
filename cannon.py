@@ -5,16 +5,13 @@ from ball import Ball
 from utils import draw_rotated
 
 
-class Gun:
+class Cannon:
     def __init__(self, screen):
         self.screen = screen
         self.power = 10
         self.preparing = 0
         self.angle = 1
         self.color = GREY
-
-        self.x = 40
-        self.y = self.screen.get_clip().h / 2
 
         self.ball_r = 16
         self.h2 = self.ball_r * 2 + 2
@@ -25,6 +22,9 @@ class Gun:
         self.power_increase = 0.02
         self.power_max = 1
         self.release()
+
+        self.x = self.h1 / 2
+        self.y = self.screen.get_clip().h / 2
 
     def release(self):
         self.preparing = False
@@ -48,7 +48,7 @@ class Gun:
         :return: выстреленный мяч
         """
         lever = self.w - self.h1
-        v = 50
+        v = 100
         ball = Ball(
             self.screen,
             self.x + lever * math.cos(self.angle),

@@ -54,10 +54,12 @@ class Ball:
         :return: Возвращает True в случае столкновения мяча и цели. В противном случае возвращает False.
         """
         x, y = obj.nearest_from(self.x, self.y)
-        dist2 = x ** 2 + y ** 2
+        dist = math.sqrt(x ** 2 + y ** 2)
 
-        if 0 < dist2 < self.r ** 2:
-            self.reflect(x, y)
+        if dist != 0:
+            v_pr = max((self.vx * x + self.vy * y) / dist, 0)
+            if dist < max(self.r, v_pr):
+                self.reflect(x, y)
 
         return False
 
@@ -66,9 +68,9 @@ class Ball:
         Отражает скорость относительно данного вектора и меняет на противоположную c потерями энергии.
         """
         dist2 = x ** 2 + y ** 2
-        v_proj = self.vx * x + self.vy * y
-        px = -v_proj * x / dist2
-        py = -v_proj * y / dist2
+        v_pr = self.vx * x + self.vy * y
+        px = -v_pr * x / dist2
+        py = -v_pr * y / dist2
         self.vx += 2 * px
         self.vy += 2 * py
         self.vx *= self.save_k

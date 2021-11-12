@@ -1,7 +1,8 @@
 import pygame
-from gun import Gun
+from cannon import Cannon
 from target import Target
 from colors import WHITE, BLACK
+from random import randint
 
 FPS = 30
 
@@ -9,15 +10,17 @@ WIDTH = 800
 HEIGHT = 600
 
 pygame.init()
-pygame.display.set_caption('Rainbow come machine')
+pygame.display.set_caption('Pinball cannons')
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 bullets = 0
 balls = []
 
 clock = pygame.time.Clock()
 
-gun = Gun(screen)
-targets = [Target(screen) for _ in range(5)]
+gun = Cannon(screen)
+targets = []
+for i in range(10):
+    targets.append(Target(screen, targets))
 finished = False
 
 while not finished:
