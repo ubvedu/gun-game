@@ -96,3 +96,6 @@ class Target:
 
         # рассчёт искомого вектора
         return n1x * r1 + n2x * r2, n1y * r1 + n2y * r2
+
+    def reflect(self, x, y):
+        pass
