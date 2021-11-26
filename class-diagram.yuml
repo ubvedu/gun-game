@@ -1,0 +1,9 @@
+// {type:class}
+// {direction:topDown}
+
+[move()|draw()|nearest_from(x, y)]
+[move()|draw()|nearest_from(x, y)] ^-.- [Target]
+[move()|draw()|nearest_from(x, y)] ^-.- [Ball]
+[TargetSpawner] *-> [Target]
+[move()|draw()|nearest_from(x, y)] ^-.- [TargetSpawner]
+[Gun] *-> [Ball]

@@ -26,6 +26,11 @@ class Cannon:
         self.x = self.h1 / 2
         self.y = self.screen.get_clip().h / 2
 
+        self.vy = 0
+
+    def move(self):
+        self.y = min(max(0, self.y + self.vy), self.screen.get_clip().h)
+
     def release(self):
         self.preparing = False
         self.power = self.power_default

@@ -19,7 +19,7 @@ class Ball:
         self.vx = vx
         self.vy = vy
         self.g = 0.5
-        self.save_k = 0.8
+        self.save_k = 0.9
         self.color = DARKER_GREY
         self.live = 30
 
