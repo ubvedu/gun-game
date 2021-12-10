@@ -6,6 +6,8 @@ def draw_rotated(dst, x, y, src, ox, oy, angle):
     """
     Рисует объект pygame.Surface, повёрнутый на данный угол относительно данной точки на ней.
     Угол задаётся в радианах от -math.pi/2 до math.pi/2.
+
+    dst - объект pygame.Surface, на который происходит отрисовка
     """
     lever = math.sqrt(ox ** 2 + oy ** 2)
     clip = src.get_clip()

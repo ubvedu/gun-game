@@ -1,10 +1,9 @@
 import math
 import pygame
-from colors import DARKER_GREY
 
 
 class Ball:
-    def __init__(self, screen, x, y, r, vx, vy):
+    def __init__(self, screen, x, y, r, vx, vy, team, color):
         """
         Конструктор класса ball
 
@@ -19,9 +18,11 @@ class Ball:
         self.vx = vx
         self.vy = vy
         self.g = 0.5
-        self.save_k = 0.9
-        self.color = DARKER_GREY
+        self.save_k = 0.6
+        self.color = color
         self.live = 30
+
+        self.team = team
 
     def is_out(self):
         return self.screen.get_clip().h < self.y - self.r
@@ -63,7 +64,7 @@ class Ball:
 
         if dist != 0:
             v_pr = max((self.vx * x + self.vy * y) / dist, 0)
-            if dist < max(self.r, v_pr):
+            if dist < self.r + v_pr:
                 self.reflect(x, y)
 
         return False

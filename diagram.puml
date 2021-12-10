@@ -1,0 +1,42 @@
+@startuml class
+
+interface Body {
+    + {abstract} nearest_from(x, y)
+}
+
+class Spinner {
+
+}
+
+class SpinnerSpawner {
+    + cols: list[list[Spinner]]
+}
+
+class Cannon {
+
+}
+
+class PlayerCannon {
+
+}
+
+class ComputerCannon {
+
+}
+
+class Ball {
+    + collide(body: Body)
+}
+
+class Wall {
+
+}
+
+Body <|.. Spinner
+Body <|.. SpinnerSpawner
+SpinnerSpawner *- Spinner : спавнит
+Body <|.. Wall
+Cannon o- Ball : создаёт
+Ball o. Body : nearest_from
+Cannon <|-- PlayerCannon
+Cannon <|-- ComputerCannon
